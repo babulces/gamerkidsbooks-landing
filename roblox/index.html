@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crea tu Primer Juego en Roblox | GamerKids Books</title>
+<meta name="description" content="De jugador a creador: la guía paso a paso que enseña a los niños a construir y publicar su propio juego en Roblox, con código real.">
+<meta property="og:title" content="Crea tu Primer Juego en Roblox">
+<meta property="og:description" content="De jugador a creador: la guía paso a paso que enseña a los niños a construir y publicar su propio juego en Roblox, con código real.">
+<meta property="og:image" content="/assets/covers/roblox-es.png">
+<meta property="og:type" content="product">
+<link rel="icon" type="image/png" href="/assets/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bungee&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0B3D91;
+  --accent: #00A2FF;
+  --dark: #061E48;
+  --text: #1a1a1a;
+  --bg: #ffffff;
+  --bg-soft: #f7f7fb;
+  --muted: #6b7280;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Fredoka', -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+header {
+  background: var(--dark);
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 3px solid var(--accent);
+}
+header .container { display: flex; justify-content: space-between; align-items: center; }
+header a { color: white; text-decoration: none; font-weight: 600; }
+header .logo { display: flex; align-items: center; gap: 12px; font-family: 'Bungee', sans-serif; font-size: 18px; }
+header .logo img { height: 40px; }
+
+.hero {
+  background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+  color: white;
+  padding: 60px 0 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 70%, var(--accent) 0%, transparent 40%);
+  opacity: 0.4;
+  pointer-events: none;
+}
+.hero .container { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; position: relative; }
+
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--dark);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hero h1 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 44px;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+}
+.hero h2 {
+  font-size: 20px;
+  font-weight: 400;
+  opacity: 0.92;
+  margin-bottom: 24px;
+}
+.hero .tagline {
+  font-size: 17px;
+  margin-bottom: 32px;
+  opacity: 0.95;
+  max-width: 540px;
+}
+
+.hero-cover {
+  display: flex;
+  justify-content: center;
+}
+.hero-cover img {
+  max-width: 320px;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 6px rgba(255,255,255,0.1);
+  transform: rotate(-3deg);
+  transition: transform 0.3s;
+}
+.hero-cover img:hover { transform: rotate(0deg) scale(1.02); }
+
+.price-box {
+  display: inline-flex;
+  flex-direction: column;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(8px);
+  padding: 14px 22px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 2px solid var(--accent);
+}
+.price-label { font-size: 12px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
+.price-main { font-family: 'Bungee', sans-serif; font-size: 36px; color: var(--accent); }
+.price-cop { font-size: 14px; opacity: 0.85; margin-top: 2px; }
+
+.cta-button {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--dark);
+  font-family: 'Bungee', sans-serif;
+  font-size: 20px;
+  padding: 18px 36px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.2);
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 rgba(0,0,0,0.3), 0 14px 40px rgba(0,0,0,0.25);
+}
+.cta-button:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.3); }
+.cta-button.cta-cop {
+  background: #14b8a6;
+  color: white;
+}
+.cta-button.cta-cop:hover { background: #0f9e8e; }
+.cta-button.cta-usd {
+  background: #f59e0b;
+  color: white;
+}
+.cta-button.cta-usd:hover { background: #d97f06; }
+.cta-note { display: block; font-size: 13px; margin-top: 12px; opacity: 0.85; }
+.cta-group {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.cta-inline {
+  padding: 40px 0;
+  text-align: center;
+  background: linear-gradient(90deg, transparent 0%, var(--bg-soft) 20%, var(--bg-soft) 80%, transparent 100%);
+}
+.cta-inline .cta-button { font-size: 18px; padding: 16px 32px; }
+.cta-inline .cta-group { justify-content: center; }
+.cta-inline .cta-note { color: var(--muted); }
+
+.final-cta .cta-group { justify-content: center; }
+
+.hook-section {
+  background: var(--bg-soft);
+  padding: 60px 0;
+  text-align: center;
+}
+.hook-section .pain {
+  font-size: 24px;
+  font-weight: 600;
+  max-width: 720px;
+  margin: 0 auto 20px;
+  color: var(--text);
+}
+.hook-section .promise {
+  font-size: 18px;
+  max-width: 680px;
+  margin: 0 auto;
+  color: var(--muted);
+}
+
+section.features { padding: 80px 0; }
+section.features h2 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 32px;
+  color: var(--dark);
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.benefit-item {
+  list-style: none;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: white;
+  padding: 18px 20px;
+  border-radius: 12px;
+  border-left: 4px solid var(--accent);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  font-size: 16px;
+}
+.benefit-item .check {
+  color: var(--primary);
+  font-weight: 900;
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.includes-section {
+  background: var(--bg-soft);
+  padding: 80px 0;
+}
+.includes-section .container { max-width: 820px; }
+.includes-section h2 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 32px;
+  color: var(--dark);
+  text-align: center;
+  margin-bottom: 40px;
+}
+.includes-list { list-style: none; }
+.include-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px dashed #d1d5db;
+  font-size: 17px;
+}
+.include-item:last-child { border-bottom: none; }
+.include-item .dot {
+  color: var(--accent);
+  font-size: 18px;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.meta-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 40px auto 0;
+  max-width: 640px;
+}
+.meta-item {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.meta-item .num { font-family: 'Bungee', sans-serif; font-size: 28px; color: var(--primary); }
+.meta-item .lbl { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+.why-section {
+  padding: 80px 0;
+}
+.why-section h2 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 32px;
+  color: var(--dark);
+  text-align: center;
+  margin-bottom: 48px;
+}
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.why-card {
+  background: linear-gradient(135deg, white 0%, var(--bg-soft) 100%);
+  padding: 28px;
+  border-radius: 16px;
+  border-top: 4px solid var(--accent);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+.why-card h3 {
+  font-family: 'Bungee', sans-serif;
+  color: var(--primary);
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.why-card p { color: var(--muted); }
+
+.author-section {
+  background: var(--dark);
+  color: white;
+  padding: 80px 0;
+  text-align: center;
+}
+.author-section h2 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 32px;
+  margin-bottom: 24px;
+  color: var(--accent);
+}
+.author-section p {
+  max-width: 680px;
+  margin: 0 auto;
+  font-size: 17px;
+  opacity: 0.92;
+}
+
+.delivery-section {
+  padding: 80px 0;
+  background: var(--bg-soft);
+}
+.delivery-section h2 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 32px;
+  color: var(--dark);
+  text-align: center;
+  margin-bottom: 48px;
+}
+.delivery-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.delivery-step {
+  background: white;
+  padding: 30px 24px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  position: relative;
+}
+.delivery-step .step-num {
+  font-family: 'Bungee', sans-serif;
+  font-size: 48px;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+.delivery-step p { font-size: 16px; color: var(--text); font-weight: 600; }
+
+.faq-section { padding: 80px 0; }
+.faq-section h2 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 32px;
+  color: var(--dark);
+  text-align: center;
+  margin-bottom: 48px;
+}
+.faq-list { max-width: 760px; margin: 0 auto; }
+.faq-item {
+  background: var(--bg-soft);
+  border-radius: 12px;
+  padding: 22px 26px;
+  margin-bottom: 14px;
+  border-left: 4px solid var(--primary);
+}
+.faq-item h3 {
+  font-size: 18px;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+.faq-item p { color: var(--muted); }
+
+.final-cta {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+  color: white;
+  padding: 80px 0;
+  text-align: center;
+}
+.final-cta h2 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+.final-cta p { font-size: 18px; opacity: 0.92; margin-bottom: 32px; }
+
+footer {
+  background: #0a0a0a;
+  color: #9ca3af;
+  padding: 40px 0;
+  text-align: center;
+  font-size: 14px;
+}
+footer a { color: var(--accent); text-decoration: none; }
+
+@media (max-width: 768px) {
+  .hero { padding: 40px 0 60px; }
+  .hero .container { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+  .hero h1 { font-size: 30px; }
+  .hero h2 { font-size: 17px; }
+  .hero-cover img { max-width: 240px; }
+  .benefits-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .delivery-steps { grid-template-columns: 1fr; }
+  .meta-row { grid-template-columns: 1fr; }
+  header .logo { font-size: 14px; }
+  header .logo img { height: 32px; }
+  section.features h2, .includes-section h2, .why-section h2, .delivery-section h2, .faq-section h2 { font-size: 24px; }
+  .final-cta h2 { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <a href="/" class="logo">
+      <img src="/assets/logo.png" alt="GamerKids Books">
+      <span>GAMERKIDS BOOKS</span>
+    </a>
+    <a href="/">Catálogo</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-text">
+      <span class="badge">⭐ Escrito por un adolescente gamer de verdad</span>
+      <h1>Crea tu Primer Juego en Roblox</h1>
+      <h2>Guía para Jóvenes Creadores 9-13 años</h2>
+      <p class="tagline">De jugador a creador: la guía paso a paso que enseña a los niños a construir y publicar su propio juego en Roblox, con código real.</p>
+      <div class="price-box">
+        <span class="price-label">Desde</span>
+        <span class="price-main">$9 USD</span>
+        <div class="price-cop">$35.000 COP</div>
+      </div>
+      <div>
+        <div class="cta-group"><a href="https://checkout.bold.co/payment/LNK_UYBSTLW3SD" class="cta-button cta-cop">Pagar en COP</a><a href="https://checkout.bold.co/payment/LNK_QDY7ZWFO3L" class="cta-button cta-usd">Pagar en USD</a></div>
+        <span class="cta-note">⚡ Descarga inmediata · Pago seguro con Bold</span>
+      </div>
+    </div>
+    <div class="hero-cover">
+      <img src="/assets/covers/roblox-es.png" alt="Crea tu Primer Juego en Roblox">
+    </div>
+  </div>
+</section>
+
+<section class="hook-section">
+  <div class="container">
+    <p class="pain">¿Tu hijo pasa horas jugando Roblox y sueña con crear su propio juego, pero no sabe por dónde empezar? ¿Los tutoriales están en inglés o son demasiado técnicos?</p>
+    <p class="promise">Al terminar este libro, tu hijo tendrá su propio juego publicado en Roblox, jugable por sus amigos. Sin experiencia previa. Paso a paso.</p>
+  </div>
+</section>
+
+<section class="cta-inline">
+  <div class="container">
+    <div class="cta-group"><a href="https://checkout.bold.co/payment/LNK_UYBSTLW3SD" class="cta-button cta-cop">Pagar en COP</a><a href="https://checkout.bold.co/payment/LNK_QDY7ZWFO3L" class="cta-button cta-usd">Pagar en USD</a></div>
+    <span class="cta-note">⚡ Descarga inmediata · Pago seguro con Bold</span>
+  </div>
+</section>
+
+<section class="features">
+  <div class="container">
+    <h2>🎯 Lo que tu hijo va a aprender</h2>
+    <ul class="benefits-grid">
+            <li class="benefit-item"><span class="check">✓</span><span>Instalar y dominar Roblox Studio desde cero</span></li>
+            <li class="benefit-item"><span class="check">✓</span><span>Crear un mundo 3D completo con ambiente, plataformas y trampas</span></li>
+            <li class="benefit-item"><span class="check">✓</span><span>Implementar checkpoints, monedas coleccionables y leaderboard</span></li>
+            <li class="benefit-item"><span class="check">✓</span><span>Diseñar un estilo visual profesional (materiales, luces, partículas)</span></li>
+            <li class="benefit-item"><span class="check">✓</span><span>Escribir sus primeras líneas de código en Luau (lenguaje oficial)</span></li>
+            <li class="benefit-item"><span class="check">✓</span><span>Publicar su juego para que cualquier persona del mundo lo juegue</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="includes-section">
+  <div class="container">
+    <h2>📖 Qué incluye el libro</h2>
+    <ul class="includes-list">
+            <li class="include-item"><span class="dot">●</span><span>10 capítulos paso a paso con proyecto real (obby completo)</span></li>
+            <li class="include-item"><span class="dot">●</span><span>Scripts de Luau listos para copiar/pegar y modificar</span></li>
+            <li class="include-item"><span class="dot">●</span><span>11 ilustraciones originales en estilo Pixar 3D</span></li>
+            <li class="include-item"><span class="dot">●</span><span>Sección completa de seguridad online y controles parentales</span></li>
+            <li class="include-item"><span class="dot">●</span><span>Glosario con todos los términos técnicos de Roblox Studio</span></li>
+    </ul>
+    <div class="meta-row">
+      <div class="meta-item">
+        <div class="num">66</div>
+        <div class="lbl">páginas</div>
+      </div>
+      <div class="meta-item">
+        <div class="num">11</div>
+        <div class="lbl">ilustraciones a color</div>
+      </div>
+      <div class="meta-item">
+        <div class="num">9-13</div>
+        <div class="lbl">Edad</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-inline">
+  <div class="container">
+    <div class="cta-group"><a href="https://checkout.bold.co/payment/LNK_UYBSTLW3SD" class="cta-button cta-cop">Pagar en COP</a><a href="https://checkout.bold.co/payment/LNK_QDY7ZWFO3L" class="cta-button cta-usd">Pagar en USD</a></div>
+    <span class="cta-note">⚡ Descarga inmediata · Pago seguro con Bold</span>
+  </div>
+</section>
+
+<section class="why-section">
+  <div class="container">
+    <h2>✨ Por qué este libro es diferente</h2>
+    <div class="why-grid">
+      <div class="why-card"><h3>Lenguaje de niños</h3><p>No es un manual aburrido. Está escrito en un lenguaje que los niños entienden y disfrutan leer.</p></div>
+      <div class="why-card"><h3>Paso a paso</h3><p>Cada capítulo lleva al lector de la mano desde lo más básico hasta el resultado final.</p></div>
+      <div class="why-card"><h3>Ilustraciones reales</h3><p>Cada capítulo tiene ilustraciones originales a todo color que refuerzan lo que aprenden.</p></div>
+      <div class="why-card"><h3>Para padres también</h3><p>Incluye una sección especial para padres con consejos de seguridad y controles parentales.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="author-section">
+  <div class="container">
+    <h2>🎮 Escrito por un adolescente gamer</h2>
+    <p>Los libros de GamerKids Books no los escribe una editorial aburrida: los escribe un adolescente de 15 años que lleva años jugando Minecraft, Roblox y Clash Royale. Sabe cómo piensa un niño gamer, qué lo frustra, qué lo motiva y qué le funciona. Por eso sus libros conectan.</p>
+  </div>
+</section>
+
+<section class="cta-inline">
+  <div class="container">
+    <div class="cta-group"><a href="https://checkout.bold.co/payment/LNK_UYBSTLW3SD" class="cta-button cta-cop">Pagar en COP</a><a href="https://checkout.bold.co/payment/LNK_QDY7ZWFO3L" class="cta-button cta-usd">Pagar en USD</a></div>
+    <span class="cta-note">⚡ Descarga inmediata · Pago seguro con Bold</span>
+  </div>
+</section>
+
+<section class="delivery-section">
+  <div class="container">
+    <h2>📬 Cómo recibes el libro</h2>
+    <div class="delivery-steps">
+      <div class="delivery-step"><div class="step-num">1</div><p>Haces clic en el botón de compra</p></div>
+      <div class="delivery-step"><div class="step-num">2</div><p>Pagas con Nequi, PSE, transferencia o tarjeta</p></div>
+      <div class="delivery-step"><div class="step-num">3</div><p>Recibes el PDF al instante en tu correo</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="faq-section">
+  <div class="container">
+    <h2>❓ Preguntas frecuentes</h2>
+    <div class="faq-list">
+      <div class="faq-item"><h3>¿Cómo recibo el libro?</h3><p>Al completar el pago, recibirás el PDF por email en máximo 5 minutos. Listo para leer en tablet, computadora, celular o imprimir en casa.</p></div>
+      <div class="faq-item"><h3>¿Qué métodos de pago aceptan?</h3><p>Nequi, PSE, transferencia bancaria, tarjeta de crédito/débito y más. Todo a través de Bold, la pasarela de pagos más segura de Colombia.</p></div>
+      <div class="faq-item"><h3>¿Funciona en cualquier dispositivo?</h3><p>Sí. Es un PDF que se abre en cualquier celular, tablet, computadora o lector de ebooks. También se puede imprimir.</p></div>
+      <div class="faq-item"><h3>¿Hay garantía?</h3><p>Sí. Si el libro no cumple con lo que prometemos, te devolvemos el 100% de tu dinero dentro de los primeros 7 días. Solo escríbenos.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="container">
+    <h2>Crea tu Primer Juego en Roblox</h2>
+    <p>Descarga inmediata · Pago seguro con Bold</p>
+    <div class="cta-group"><a href="https://checkout.bold.co/payment/LNK_UYBSTLW3SD" class="cta-button cta-cop">Pagar en COP</a><a href="https://checkout.bold.co/payment/LNK_QDY7ZWFO3L" class="cta-button cta-usd">Pagar en USD</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 GamerKids Books · Libros para niños gamers que quieren aprender, crear y divertirse.</p>
+  </div>
+</footer>
+
+</body>
+</html>

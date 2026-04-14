@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GamerKids Books · Libros para niños gamers</title>
+<meta name="description" content="Libros para niños gamers escritos por un adolescente gamer de verdad. Minecraft, Roblox, Clash Royale. Descarga inmediata.">
+<meta property="og:title" content="GamerKids Books">
+<meta property="og:description" content="Libros para niños gamers escritos por un adolescente gamer de verdad.">
+<meta property="og:image" content="/assets/logo.png">
+<link rel="icon" type="image/png" href="/assets/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bungee&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1645A6;
+  --accent: #FFC107;
+  --dark: #0C0E27;
+  --text: #1a1a1a;
+  --bg: #f7f7fb;
+  --muted: #6b7280;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Fredoka', -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+header {
+  background: var(--dark);
+  padding: 16px 0;
+  border-bottom: 3px solid var(--accent);
+}
+header .container { display: flex; justify-content: space-between; align-items: center; }
+header .logo { display: flex; align-items: center; gap: 12px; color: white; font-family: 'Bungee', sans-serif; font-size: 18px; text-decoration: none; }
+header .logo img { height: 40px; }
+
+.hero {
+  background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+  color: white;
+  padding: 80px 0 100px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 70%, var(--accent) 0%, transparent 40%);
+  opacity: 0.3;
+}
+.hero .container { position: relative; }
+.hero h1 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 52px;
+  line-height: 1.05;
+  margin-bottom: 16px;
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+}
+.hero p {
+  font-size: 20px;
+  max-width: 680px;
+  margin: 0 auto;
+  opacity: 0.92;
+}
+
+.catalogo { padding: 80px 0; }
+.catalogo h2 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 32px;
+  color: var(--dark);
+  text-align: center;
+  margin-bottom: 48px;
+}
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.book-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.3s;
+  border-top: 4px solid var(--card-accent);
+  display: flex;
+  flex-direction: column;
+}
+.book-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+.book-card-cover {
+  background: linear-gradient(135deg, var(--card-dark), var(--card-primary));
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+}
+.book-card-cover img {
+  max-width: 200px;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+.book-card-body {
+  padding: 24px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.book-card-lang {
+  display: inline-block;
+  background: var(--card-accent);
+  color: var(--card-dark);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  align-self: flex-start;
+}
+.book-card-body h3 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 18px;
+  color: var(--card-primary);
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.book-card-body p {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 18px;
+  flex-grow: 1;
+}
+.book-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px dashed #e5e7eb;
+}
+.book-card-price {
+  font-family: 'Bungee', sans-serif;
+  font-size: 22px;
+  color: var(--card-primary);
+}
+.book-card-cta {
+  font-weight: 700;
+  color: var(--card-accent);
+  font-size: 14px;
+}
+
+.about {
+  background: var(--dark);
+  color: white;
+  padding: 80px 0;
+  text-align: center;
+}
+.about h2 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 32px;
+  margin-bottom: 24px;
+  color: var(--accent);
+}
+.about p {
+  max-width: 680px;
+  margin: 0 auto;
+  font-size: 17px;
+  opacity: 0.92;
+}
+
+footer {
+  background: #0a0a0a;
+  color: #9ca3af;
+  padding: 40px 0;
+  text-align: center;
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .books-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero h1 { font-size: 36px; }
+  .hero p { font-size: 17px; }
+}
+@media (max-width: 600px) {
+  .books-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <a href="/" class="logo">
+      <img src="/assets/logo.png" alt="GamerKids Books">
+      <span>GAMERKIDS BOOKS</span>
+    </a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <h1>🎮 Libros para niños gamers</h1>
+    <p>Guías escritas por un adolescente gamer de verdad, para niños que quieren aprender, crear y divertirse.</p>
+  </div>
+</section>
+
+<section class="catalogo">
+  <div class="container">
+    <h2>📚 Nuestro catálogo</h2>
+    <div class="books-grid">
+      <a href="/minecraft" class="book-card" style="--card-primary: #4CAF50; --card-accent: #8BC34A; --card-dark: #1B5E20;">
+        <div class="book-card-cover"><img src="/assets/covers/minecraft-es.png" alt="El Gran Libro de Aventuras en Minecraft"></div>
+        <div class="book-card-body">
+          <span class="book-card-lang">🇪🇸 ES</span>
+          <h3>El Gran Libro de Aventuras en Minecraft</h3>
+          <p>Guía para Pequeños Exploradores 7-10 años</p>
+          <div class="book-card-footer">
+            <span class="book-card-price">$7 USD</span>
+            <span class="book-card-cta">Ver libro →</span>
+          </div>
+        </div>
+      </a>
+      <a href="/minecraft-en" class="book-card" style="--card-primary: #4CAF50; --card-accent: #8BC34A; --card-dark: #1B5E20;">
+        <div class="book-card-cover"><img src="/assets/covers/minecraft-en.png" alt="The Big Book of Minecraft Adventures"></div>
+        <div class="book-card-body">
+          <span class="book-card-lang">🇬🇧 EN</span>
+          <h3>The Big Book of Minecraft Adventures</h3>
+          <p>A Guide for Young Explorers Ages 7-10</p>
+          <div class="book-card-footer">
+            <span class="book-card-price">$9 USD</span>
+            <span class="book-card-cta">Ver libro →</span>
+          </div>
+        </div>
+      </a>
+      <a href="/clash" class="book-card" style="--card-primary: #0D3B7F; --card-accent: #FFC107; --card-dark: #06194A;">
+        <div class="book-card-cover"><img src="/assets/covers/clash-es.png" alt="Clash Royale para Pequeños Campeones"></div>
+        <div class="book-card-body">
+          <span class="book-card-lang">🇪🇸 ES</span>
+          <h3>Clash Royale para Pequeños Campeones</h3>
+          <p>Guía Estratégica para Niños 7-9 años</p>
+          <div class="book-card-footer">
+            <span class="book-card-price">$7 USD</span>
+            <span class="book-card-cta">Ver libro →</span>
+          </div>
+        </div>
+      </a>
+      <a href="/clash-en" class="book-card" style="--card-primary: #0D3B7F; --card-accent: #FFC107; --card-dark: #06194A;">
+        <div class="book-card-cover"><img src="/assets/covers/clash-en.png" alt="Clash Royale for Little Champions"></div>
+        <div class="book-card-body">
+          <span class="book-card-lang">🇬🇧 EN</span>
+          <h3>Clash Royale for Little Champions</h3>
+          <p>Strategy Guide for Kids Ages 7-9</p>
+          <div class="book-card-footer">
+            <span class="book-card-price">$9 USD</span>
+            <span class="book-card-cta">Ver libro →</span>
+          </div>
+        </div>
+      </a>
+      <a href="/roblox" class="book-card" style="--card-primary: #0B3D91; --card-accent: #00A2FF; --card-dark: #061E48;">
+        <div class="book-card-cover"><img src="/assets/covers/roblox-es.png" alt="Crea tu Primer Juego en Roblox"></div>
+        <div class="book-card-body">
+          <span class="book-card-lang">🇪🇸 ES</span>
+          <h3>Crea tu Primer Juego en Roblox</h3>
+          <p>Guía para Jóvenes Creadores 9-13 años</p>
+          <div class="book-card-footer">
+            <span class="book-card-price">$9 USD</span>
+            <span class="book-card-cta">Ver libro →</span>
+          </div>
+        </div>
+      </a>
+      <a href="/roblox-en" class="book-card" style="--card-primary: #0B3D91; --card-accent: #00A2FF; --card-dark: #061E48;">
+        <div class="book-card-cover"><img src="/assets/covers/roblox-en.png" alt="Create Your First Game in Roblox"></div>
+        <div class="book-card-body">
+          <span class="book-card-lang">🇬🇧 EN</span>
+          <h3>Create Your First Game in Roblox</h3>
+          <p>A Guide for Young Creators Ages 9-13</p>
+          <div class="book-card-footer">
+            <span class="book-card-price">$11 USD</span>
+            <span class="book-card-cta">Ver libro →</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="about">
+  <div class="container">
+    <h2>🎮 Escrito por un adolescente gamer</h2>
+    <p>Los libros de GamerKids Books no los escribe una editorial aburrida: los escribe un adolescente de 15 años que lleva años jugando Minecraft, Roblox y Clash Royale. Sabe cómo piensa un niño gamer, qué lo frustra, qué lo motiva y qué le funciona. Por eso sus libros conectan.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 GamerKids Books · Libros para niños gamers que quieren aprender, crear y divertirse.</p>
+  </div>
+</footer>
+
+</body>
+</html>
