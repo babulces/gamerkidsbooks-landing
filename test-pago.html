@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test de pago · GamerKids Books</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="/assets/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bungee&display=swap" rel="stylesheet">
+<script src="https://checkout.bold.co/library/boldPaymentButton.js"></script>
+<style>
+:root {
+  --primary: #1645A6;
+  --accent: #FFC107;
+  --dark: #0C0E27;
+  --bg: #f7f7fb;
+  --text: #1a1a1a;
+  --muted: #6b7280;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Fredoka', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.card {
+  background: white;
+  max-width: 540px;
+  width: 100%;
+  border-radius: 24px;
+  padding: 48px 36px;
+  box-shadow: 0 30px 80px rgba(11, 30, 72, 0.18);
+  text-align: center;
+  border-top: 6px solid var(--accent);
+}
+.tag {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+h1 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 26px;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+.subtitle {
+  color: var(--muted);
+  font-size: 16px;
+  margin-bottom: 28px;
+}
+.amount-box {
+  background: linear-gradient(135deg, var(--dark), var(--primary));
+  color: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.amount-box .label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+.amount-box .amount {
+  font-family: 'Bungee', sans-serif;
+  font-size: 42px;
+  color: var(--accent);
+}
+.cta {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--dark);
+  font-family: 'Bungee', sans-serif;
+  font-size: 18px;
+  padding: 18px 36px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.25), 0 10px 30px rgba(0,0,0,0.15);
+  transition: transform 0.15s;
+}
+.cta:hover { transform: translateY(-2px); }
+.cta:active { transform: translateY(2px); }
+.checklist {
+  text-align: left;
+  background: #f3f4f6;
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-top: 28px;
+  font-size: 14px;
+  color: #374151;
+}
+.checklist h3 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+.checklist ol { padding-left: 20px; line-height: 1.7; }
+.note {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 22px;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <span class="tag">⚠️ Modo de prueba</span>
+  <h1>Test de integración Bold</h1>
+  <p class="subtitle">Esta es una página oculta para validar el flujo de pago end-to-end. No la compartas.</p>
+
+  <div class="amount-box">
+    <div class="label">Monto de prueba</div>
+    <div class="amount">$1.000 COP</div>
+  </div>
+
+  <button type="button" class="cta" onclick="handleTestPayment()">
+    💳 Probar pago $1.000 COP
+  </button>
+
+  <div class="checklist">
+    <h3>Qué validar</h3>
+    <ol>
+      <li>Se abre el modal de Bold (no error BTN001)</li>
+      <li>Aceptan Nequi / PSE / tarjeta</li>
+      <li>Tras pagar redirige a <code>/success.html?book=test&amp;bold-tx-status=approved&amp;bold-order-id=...</code></li>
+      <li>La página de éxito muestra el mensaje de prueba</li>
+      <li>Si se cancela, la página de éxito muestra el error correctamente</li>
+    </ol>
+  </div>
+
+  <p class="note">Página oculta · No indexada · Solo accesible con URL directa</p>
+</div>
+
+<script>
+const BOLD_API_KEY   = "0w4DS4qQYZ7IBnmsABmnGCOtKs7D0gYoIC3fXGbtKhk";
+const BOLD_INTEGRITY = "zWwFVEXEs9puReGSKM2yYQ";
+
+async function sha256Hex(message) {
+  const data = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(hashBuffer))
+    .map(b => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+async function handleTestPayment() {
+  if (!window.BoldCheckout) {
+    alert("Bold todavía está cargando. Espera unos segundos y vuelve a intentar.");
+    return;
+  }
+  try {
+    const amount   = "1000";
+    const currency = "COP";
+    const orderId  = "GKB-TEST-" + Date.now();
+    const hash     = await sha256Hex(orderId + amount + currency + BOLD_INTEGRITY);
+    const checkout = new window.BoldCheckout({
+      apiKey: BOLD_API_KEY,
+      amount: amount,
+      currency: currency,
+      orderId: orderId,
+      integritySignature: hash,
+      description: "Test de integración GamerKids Books",
+      redirectionUrl: window.location.origin + "/success.html?book=test",
+      renderMode: "embedded"
+    });
+    checkout.open();
+  } catch (err) {
+    console.error("Test payment error:", err);
+    alert("Error al abrir el checkout: " + err.message);
+  }
+}
+</script>
+
+</body>
+</html>
