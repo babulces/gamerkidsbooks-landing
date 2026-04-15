@@ -13,8 +13,36 @@ Se despliega directo a Vercel arrastrando la carpeta `landing/` o con `vercel de
 """
 
 from pathlib import Path
+from urllib.parse import quote
 
 ROOT = Path(__file__).parent
+
+# ---------------------------------------------------------------------------
+# Configuracion global de contacto
+# ---------------------------------------------------------------------------
+
+WA_NUMBER = "573214536735"  # Colombia, sin + ni espacios (formato wa.me)
+
+
+def wa_link(book_title_for_msg, lang):
+    """Construye el enlace wa.me con mensaje pre-llenado por libro."""
+    if lang == "es":
+        msg = (
+            f"Hola GamerKids! 🎮 Compré *{book_title_for_msg}* y adjunto "
+            f"el comprobante de pago. ¿Me envían el PDF? ¡Gracias!"
+        )
+    elif lang == "pt":
+        msg = (
+            f"Oi GamerKids! 🎮 Comprei *{book_title_for_msg}* e envio "
+            f"o comprovante de pagamento. Podem me mandar o PDF? Obrigado!"
+        )
+    else:
+        msg = (
+            f"Hi GamerKids! 🎮 I just bought *{book_title_for_msg}* and "
+            f"I'm attaching my payment receipt. Can you send me the PDF? Thanks!"
+        )
+    return f"https://wa.me/{WA_NUMBER}?text={quote(msg)}"
+
 
 # ---------------------------------------------------------------------------
 # Datos de los 6 libros — fuente unica de verdad
@@ -262,6 +290,10 @@ UI = {
         "cta_pay_cop": "Pagar en COP",
         "cta_pay_usd": "Pagar en USD",
         "cta_note": "Descarga inmediata · Pago seguro con Bold",
+        "delivery_note_title": "📬 ¿Cómo recibo mi PDF?",
+        "delivery_note_body": "Después de pagar en Bold, contáctanos por WhatsApp con tu comprobante y te enviamos el PDF en menos de 1 hora (horario hábil Colombia).",
+        "delivery_note_cta": "Escríbenos por WhatsApp",
+        "wa_tooltip": "¿Dudas? Chatea con nosotros",
         "delivery_title": "Cómo recibes el libro",
         "delivery_step_1": "Haces clic en el botón de compra",
         "delivery_step_2": "Pagas con Nequi, PSE, transferencia o tarjeta",
@@ -306,6 +338,10 @@ UI = {
         "why_desc_4": "Includes a special parents section with safety tips and parental controls.",
         "cta_primary": "Buy now",
         "cta_note": "Instant download · Secure payment with Bold",
+        "delivery_note_title": "📬 How do I get my PDF?",
+        "delivery_note_body": "After paying with Bold, send us your receipt via WhatsApp and we will email you the PDF within 1 hour (Colombia business hours).",
+        "delivery_note_cta": "Message us on WhatsApp",
+        "wa_tooltip": "Questions? Chat with us",
         "delivery_title": "How you get the book",
         "delivery_step_1": "Click the buy button",
         "delivery_step_2": "Pay with credit card, bank transfer, or local methods",
@@ -775,6 +811,87 @@ footer {{
 }}
 footer a {{ color: var(--accent); text-decoration: none; }}
 
+.delivery-note {{
+  margin-top: 40px;
+  background: #f0fdf4;
+  border: 2px solid #25D366;
+  border-radius: 14px;
+  padding: 24px 28px;
+  text-align: center;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}}
+.delivery-note strong {{
+  display: block;
+  font-size: 18px;
+  color: #0f9e47;
+  margin-bottom: 6px;
+}}
+.delivery-note p {{
+  color: #374151;
+  font-size: 15px;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}}
+.wa-button-inline {{
+  display: inline-block;
+  background: #25D366;
+  color: white !important;
+  padding: 12px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+}}
+.wa-button-inline:hover {{
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+}}
+
+.wa-float {{
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
+  background: #25D366;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4), 0 2px 6px rgba(0,0,0,0.15);
+  z-index: 9999;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}}
+.wa-float:hover {{
+  transform: scale(1.08);
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.55), 0 3px 8px rgba(0,0,0,0.2);
+}}
+.wa-float .wa-tooltip {{
+  position: absolute;
+  right: 72px;
+  background: #1f2937;
+  color: white;
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  font-family: inherit;
+}}
+.wa-float:hover .wa-tooltip {{ opacity: 1; }}
+@media (max-width: 768px) {{
+  .wa-float {{ width: 54px; height: 54px; bottom: 18px; right: 18px; }}
+  .wa-float .wa-tooltip {{ display: none; }}
+}}
+
 @media (max-width: 768px) {{
   .hero {{ padding: 40px 0 60px; }}
   .hero .container {{ grid-template-columns: 1fr; gap: 32px; text-align: center; }}
@@ -870,6 +987,13 @@ footer a {{ color: var(--accent); text-decoration: none; }}
         <div class="lbl">{ui['ages_label']}</div>
       </div>
     </div>
+    <div class="delivery-note">
+      <strong>{ui['delivery_note_title']}</strong>
+      <p>{ui['delivery_note_body']}</p>
+      <a href="{wa_link(book['title'], book['lang'])}" target="_blank" rel="noopener" class="wa-button-inline">
+        💬 {ui['delivery_note_cta']}
+      </a>
+    </div>
   </div>
 </section>
 
@@ -942,6 +1066,8 @@ footer a {{ color: var(--accent); text-decoration: none; }}
     <p>© 2026 GamerKids Books · {ui['footer_tagline']}</p>
   </div>
 </footer>
+
+<a href="{wa_link(book['title'], book['lang'])}" target="_blank" rel="noopener" class="wa-float" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span class="wa-tooltip">{ui['wa_tooltip']}</span></a>
 
 </body>
 </html>
@@ -1206,9 +1332,11 @@ footer {{
 
 <footer>
   <div class="container">
-    <p>© 2026 GamerKids Books · {ui['footer_tagline']}</p>
+    <p>© 2026 GamerKids Books · GamerKids Books para niños gamers</p>
   </div>
 </footer>
+
+<a href="https://wa.me/573214536735?text=Hola%20GamerKids!%20Quiero%20informacion%20sobre%20los%20libros" target="_blank" rel="noopener" class="wa-float" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span class="wa-tooltip">Escríbenos por WhatsApp</span></a>
 
 </body>
 </html>
