@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Tu libro está listo! · GamerKids Books</title>
+<meta name="description" content="Descarga tu libro de GamerKids Books después de confirmar tu pago.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="/assets/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Bungee&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0B3D91;
+  --dark: #061E48;
+  --accent: #FFD638;
+  --accent-dark: #E6B800;
+  --success: #14b8a6;
+  --success-dark: #0f9e8e;
+  --danger: #ef4444;
+  --text: #1a1a1a;
+  --muted: #6b7280;
+  --bg-cream: #FFFAF0;
+  --bg-white: #ffffff;
+  --wa: #25D366;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Fredoka', -apple-system, sans-serif;
+  color: var(--text);
+  background: linear-gradient(135deg, #F5F7FF 0%, #FFF8E1 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+}
+.container {
+  width: 100%;
+  max-width: 680px;
+  margin: auto 0;
+}
+.card {
+  background: var(--bg-white);
+  border-radius: 32px;
+  padding: 40px 32px;
+  box-shadow: 0 20px 60px rgba(11, 61, 145, 0.12), 0 4px 16px rgba(0,0,0,0.04);
+  border: 4px solid white;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 8px;
+  background: linear-gradient(90deg, var(--primary), var(--accent), var(--success));
+}
+.icon-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.icon-circle {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #ECFDF5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid #D1FAE5;
+}
+.icon-circle svg {
+  width: 48px;
+  height: 48px;
+  color: var(--success);
+}
+.icon-circle.error {
+  background: #FEF2F2;
+  border-color: #FECACA;
+}
+.icon-circle.error svg {
+  color: var(--danger);
+}
+h1 {
+  font-family: 'Bungee', sans-serif;
+  font-size: 32px;
+  line-height: 1.15;
+  text-align: center;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+.intro {
+  text-align: center;
+  color: var(--muted);
+  font-size: 17px;
+  max-width: 520px;
+  margin: 0 auto 24px;
+  line-height: 1.55;
+}
+.save-hint {
+  background: #EEF2FF;
+  border: 2px solid #C7D2FE;
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+.save-hint .emoji {
+  font-size: 22px;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+.save-hint strong {
+  display: block;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+.save-hint p { color: #4338CA; }
+
+.files-box {
+  background: #FFFBEB;
+  border: 2px solid #FDE68A;
+  border-radius: 18px;
+  padding: 22px 22px 18px;
+  margin-bottom: 22px;
+}
+.files-box h2 {
+  font-size: 15px;
+  color: #92400E;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.download-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: white;
+  border: 2px solid #FDE68A;
+  border-radius: 14px;
+  padding: 16px 18px;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.2s;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+  font-size: 16px;
+}
+.download-btn:hover {
+  border-color: var(--accent);
+  background: #FFFDF7;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(255, 214, 56, 0.25);
+}
+.download-btn .file-icon {
+  width: 40px;
+  height: 40px;
+  background: #FEF3C7;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.download-btn .file-info {
+  flex: 1;
+  text-align: left;
+}
+.download-btn .file-name {
+  font-weight: 600;
+  color: var(--dark);
+  font-size: 15px;
+  line-height: 1.3;
+}
+.download-btn .file-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.download-btn .arrow {
+  color: var(--accent-dark);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.whatsapp-section {
+  border-top: 1px dashed #E5E7EB;
+  padding-top: 22px;
+  margin-top: 4px;
+  text-align: center;
+}
+.whatsapp-section .label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.wa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--wa);
+  color: white;
+  padding: 14px 28px;
+  border-radius: 14px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.35);
+  transition: all 0.2s;
+}
+.wa-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.45);
+}
+.wa-btn svg { width: 20px; height: 20px; }
+.whatsapp-section .note {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 10px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.back-link {
+  display: block;
+  text-align: center;
+  margin-top: 22px;
+  color: var(--muted);
+  text-decoration: underline;
+  font-size: 14px;
+}
+.back-link:hover { color: var(--primary); }
+
+footer {
+  text-align: center;
+  padding: 30px 16px 10px;
+  color: var(--muted);
+  font-size: 13px;
+  max-width: 600px;
+  line-height: 1.6;
+}
+footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+footer a:hover { text-decoration: underline; }
+
+.error-body h1 { color: var(--danger); }
+.error-body .retry-btn {
+  display: inline-block;
+  background: var(--success);
+  color: white;
+  font-family: 'Bungee', sans-serif;
+  font-size: 16px;
+  padding: 16px 32px;
+  border-radius: 14px;
+  text-decoration: none;
+  margin-top: 16px;
+  box-shadow: 0 6px 0 var(--success-dark);
+  transition: transform 0.15s;
+}
+.error-body .retry-btn:hover { transform: translateY(-2px); }
+.error-body .retry-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--success-dark); }
+
+.tx-meta {
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--muted);
+  margin: 14px auto;
+  max-width: 400px;
+  text-align: left;
+  font-family: monospace;
+}
+.tx-meta span { color: var(--text); font-weight: 600; }
+
+@media (max-width: 600px) {
+  h1 { font-size: 26px; }
+  .card { padding: 32px 22px; border-radius: 24px; }
+  .icon-circle { width: 80px; height: 80px; }
+  .icon-circle svg { width: 40px; height: 40px; }
+  .intro { font-size: 15px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="card-root" class="card">
+    <!-- Contenido se inyecta con JS -->
+    <div style="text-align:center; color: var(--muted); padding: 40px 0;">
+      <div style="font-size: 30px; margin-bottom: 12px;">⏳</div>
+      <p>Verificando tu pago...</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>¿Problema con tu acceso? Escríbenos a <a href="mailto:gamerkidsbooks@gmail.com">gamerkidsbooks@gmail.com</a> o por WhatsApp al <a href="https://wa.me/573214536735" target="_blank" rel="noopener">+57 321 453 6735</a>.</p>
+  <p style="margin-top:10px;">© 2026 GamerKids Books · Libros para niños gamers</p>
+</footer>
+
+<script>
+// Catálogo de libros indexado por slug
+const BOOKS = {
+  "minecraft": {
+    title: "El Gran Libro de Aventuras en Minecraft",
+    subtitle: "Guía para Pequeños Exploradores 7-10 años",
+    driveId: "1LW80M3HgJf4b60kUxREeOjK4npgf8xQe",
+    emoji: "⛏️"
+  },
+  "clash": {
+    title: "Clash Royale para Pequeños Campeones",
+    subtitle: "Guía Estratégica para Niños 7-9 años",
+    driveId: "1vOPivLwjj_elwNSRO98HDeXBW-CYLpO8",
+    emoji: "👑"
+  },
+  "roblox": {
+    title: "Crea tu Primer Juego en Roblox",
+    subtitle: "Guía para Jóvenes Creadores 9-13 años",
+    driveId: "1Kuapixq-eOPY0KagHu9yYfCeh6EYyhyO",
+    emoji: "🎮"
+  },
+  "minecraft-en": {
+    title: "The Big Book of Minecraft Adventures",
+    subtitle: "A Guide for Young Explorers Ages 7-10",
+    driveId: "1QatR_Ae5hyl4cFc-Wm_yQdq02hGpFKPA",
+    emoji: "⛏️"
+  },
+  "clash-en": {
+    title: "Clash Royale for Little Champions",
+    subtitle: "Strategy Guide for Kids Ages 7-9",
+    driveId: "1IcpLrQl1rJ3n10z_DgaQnkQ8OrVqBUg-",
+    emoji: "👑"
+  },
+  "roblox-en": {
+    title: "Create Your First Game in Roblox",
+    subtitle: "A Guide for Young Creators Ages 9-13",
+    driveId: "1rLaiADh-fp_LqUQTLqy3Df9lAz1DpP5r",
+    emoji: "🎮"
+  }
+};
+
+function getParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+function driveDownloadUrl(id) {
+  return "https://drive.google.com/uc?export=download&id=" + id;
+}
+
+function escapeHtml(str) {
+  return String(str || "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+function renderError(status, orderId) {
+  const statusLabel = status ? escapeHtml(status.toUpperCase()) : "DESCONOCIDO";
+  const orderLabel = orderId ? escapeHtml(orderId) : "—";
+  return `
+    <div class="error-body" style="text-align:center;">
+      <div class="icon-wrap">
+        <div class="icon-circle error">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+      </div>
+      <h1>Pago no procesado ⚠️</h1>
+      <p class="intro">Tu transacción no se completó con éxito. No te preocupes: no se hizo ningún cobro. Puedes intentarlo de nuevo o contactarnos por WhatsApp para ayudarte.</p>
+      <div class="tx-meta">
+        Orden: <span>${orderLabel}</span><br>
+        Estado: <span>${statusLabel}</span>
+      </div>
+      <a href="/" class="retry-btn">Volver a intentar</a>
+      <div class="whatsapp-section" style="margin-top: 26px;">
+        <div class="label">¿Necesitas ayuda?</div>
+        <a href="https://wa.me/573214536735?text=Hola%20GamerKids!%20Tuve%20un%20problema%20con%20el%20pago%20de%20un%20libro%20y%20necesito%20ayuda" target="_blank" rel="noopener" class="wa-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Escríbenos por WhatsApp
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+function renderSuccess(book) {
+  const downloadUrl = driveDownloadUrl(book.driveId);
+  const waMsg = encodeURIComponent(`Hola GamerKids! 🎮 Acabo de comprar *${book.title}* y necesito el link de descarga de nuevo. ¡Gracias!`);
+  const isPlaceholder = book.driveId.indexOf("REPLACE_ME") === 0;
+  const downloadBlock = isPlaceholder
+    ? `<div style="background:#FEF3C7; border:2px solid #F59E0B; border-radius:12px; padding:16px; color:#92400E; font-size:14px; text-align:center;">
+         ⚠️ Este libro aún está configurándose. Contáctanos por WhatsApp y te enviamos tu copia de inmediato.
+       </div>`
+    : `<button type="button" class="download-btn" onclick="window.open('${downloadUrl}', '_blank')">
+         <div class="file-icon">${book.emoji}</div>
+         <div class="file-info">
+           <div class="file-name">${escapeHtml(book.title)}</div>
+           <div class="file-sub">PDF · Descarga inmediata</div>
+         </div>
+         <div class="arrow">→</div>
+       </button>`;
+
+  return `
+    <div class="icon-wrap">
+      <div class="icon-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+    </div>
+    <h1>¡Tu libro está listo! 🎮</h1>
+    <p class="intro">Gracias por comprar en GamerKids Books. Tu pago fue confirmado y tu material ya está disponible para descargar.</p>
+
+    <div class="save-hint">
+      <div class="emoji">💾</div>
+      <div>
+        <strong>Guarda esta página</strong>
+        <p>Añádela a tus favoritos o copia el link para no perder el acceso. También puedes pedirnos el link por WhatsApp cuando lo necesites.</p>
+      </div>
+    </div>
+
+    <div class="files-box">
+      <h2>📥 Tu archivo listo</h2>
+      ${downloadBlock}
+
+      <div class="whatsapp-section">
+        <div class="label">¿Quieres el link a la mano?</div>
+        <a href="https://wa.me/573214536735?text=${waMsg}" target="_blank" rel="noopener" class="wa-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Enviarme el link por WhatsApp
+        </a>
+        <span class="note">Se abrirá WhatsApp para que nos escribas. Te responderemos con el link al instante.</span>
+      </div>
+    </div>
+
+    <a href="/" class="back-link">← Volver al catálogo</a>
+  `;
+}
+
+function renderUnknownBook() {
+  return `
+    <div class="error-body" style="text-align:center;">
+      <div class="icon-wrap">
+        <div class="icon-circle error">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+      </div>
+      <h1>Libro no identificado 🤔</h1>
+      <p class="intro">Recibimos tu pago pero no pudimos identificar qué libro compraste. Contáctanos por WhatsApp y te enviamos tu copia manualmente en minutos.</p>
+      <div class="whatsapp-section" style="margin-top: 20px;">
+        <a href="https://wa.me/573214536735?text=Hola%20GamerKids!%20Compré%20un%20libro%20pero%20la%20página%20de%20éxito%20no%20lo%20identificó.%20Necesito%20ayuda%20con%20mi%20descarga." target="_blank" rel="noopener" class="wa-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pedir mi libro por WhatsApp
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+(function() {
+  const root = document.getElementById("card-root");
+  const txStatus = getParam("bold-tx-status");
+  const orderId = getParam("bold-order-id");
+  const slug = getParam("book");
+
+  // Validación: si hay status y no es approved, mostramos error
+  if (txStatus && txStatus !== "approved") {
+    root.innerHTML = renderError(txStatus, orderId);
+    return;
+  }
+
+  // Si no hay slug, no sabemos qué libro entregar
+  const book = slug ? BOOKS[slug] : null;
+  if (!book) {
+    root.innerHTML = renderUnknownBook();
+    return;
+  }
+
+  root.innerHTML = renderSuccess(book);
+})();
+</script>
+
+</body>
+</html>

@@ -12,16 +12,34 @@ Las landings usan HTML + Tailwind CDN + CSS inline. No requiere npm ni build ste
 Se despliega directo a Vercel arrastrando la carpeta `landing/` o con `vercel deploy`.
 """
 
+import json
+import json
 from pathlib import Path
 from urllib.parse import quote
 
 ROOT = Path(__file__).parent
 
 # ---------------------------------------------------------------------------
-# Configuracion global de contacto
+# Configuracion global
 # ---------------------------------------------------------------------------
 
 WA_NUMBER = "573214536735"  # Colombia, sin + ni espacios (formato wa.me)
+SUPPORT_EMAIL = "gamerkidsbooks@gmail.com"
+
+# Bold — integracion manual con Hash SHA-256 (client-side, Web Crypto API)
+BOLD_API_KEY = "0w4DS4qQYZ7IBnmsABmnGCOtKs7D0gYoIC3fXGbtKhk"
+BOLD_INTEGRITY_KEY = "zWwFVEXEs9puReGSKM2yYQ"
+
+# Google Drive file IDs para la entrega de PDFs desde la pagina /success.html
+# Cada slug debe coincidir con BOOKS[i]["slug"].
+DRIVE_IDS = {
+    "minecraft":    "1LW80M3HgJf4b60kUxREeOjK4npgf8xQe",
+    "clash":        "1vOPivLwjj_elwNSRO98HDeXBW-CYLpO8",
+    "roblox":       "1Kuapixq-eOPY0KagHu9yYfCeh6EYyhyO",
+    "minecraft-en": "1QatR_Ae5hyl4cFc-Wm_yQdq02hGpFKPA",
+    "clash-en":     "1IcpLrQl1rJ3n10z_DgaQnkQ8OrVqBUg-",
+    "roblox-en":    "1rLaiADh-fp_LqUQTLqy3Df9lAz1DpP5r",
+}
 
 
 def wa_link(book_title_for_msg, lang):
@@ -57,6 +75,8 @@ BOOKS = [
         "theme": "minecraft",
         "price_usd": 7,
         "price_cop": "25.000",
+        "amount_cop": "25000",
+        "amount_usd": "7",
         "cover": "/assets/covers/minecraft-es.png",
         "bold_link_cop": "https://checkout.bold.co/payment/LNK_ZCXX893OSL",
         "bold_link_usd": "https://checkout.bold.co/payment/LNK_1HZ6LB90I2",
@@ -93,6 +113,7 @@ BOOKS = [
         "theme": "minecraft",
         "price_usd": 9,
         "price_cop": "36.000",
+        "amount_usd": "9",
         "cover": "/assets/covers/minecraft-en.png",
         "bold_link_usd": "https://checkout.bold.co/payment/LNK_L2ERT0E2QJ",
         "age": "7-10 years",
@@ -128,6 +149,8 @@ BOOKS = [
         "theme": "clash",
         "price_usd": 7,
         "price_cop": "25.000",
+        "amount_cop": "25000",
+        "amount_usd": "7",
         "cover": "/assets/covers/clash-es.png",
         "bold_link_cop": "https://checkout.bold.co/payment/LNK_Y8XM0TUUNH",
         "bold_link_usd": "https://checkout.bold.co/payment/LNK_M47D2F2UL8",
@@ -165,6 +188,7 @@ BOOKS = [
         "theme": "clash",
         "price_usd": 9,
         "price_cop": "36.000",
+        "amount_usd": "9",
         "cover": "/assets/covers/clash-en.png",
         "bold_link_usd": "https://checkout.bold.co/payment/LNK_5HFAZI9957",
         "age": "7-9 years",
@@ -201,6 +225,8 @@ BOOKS = [
         "theme": "roblox",
         "price_usd": 9,
         "price_cop": "35.000",
+        "amount_cop": "35000",
+        "amount_usd": "9",
         "cover": "/assets/covers/roblox-es.png",
         "bold_link_cop": "https://checkout.bold.co/payment/LNK_UYBSTLW3SD",
         "bold_link_usd": "https://checkout.bold.co/payment/LNK_QDY7ZWFO3L",
@@ -237,6 +263,7 @@ BOOKS = [
         "theme": "roblox",
         "price_usd": 11,
         "price_cop": "44.000",
+        "amount_usd": "11",
         "cover": "/assets/covers/roblox-en.png",
         "bold_link_usd": "https://checkout.bold.co/payment/LNK_W4Q1PTEJMQ",
         "age": "9-13 years",
@@ -386,6 +413,13 @@ def render_book_page(book):
         for i in book["includes"]
     )
 
+    # Locals consumidos por el bloque <script> de Bold al final del template.
+    # Usamos json.dumps para escapar correctamente comillas y caracteres especiales.
+    book_slug_js  = json.dumps(book["slug"])
+    book_title_js = json.dumps(book["title"])
+    amount_cop_js = json.dumps(book.get("amount_cop")) if book.get("amount_cop") else "null"
+    amount_usd_js = json.dumps(book.get("amount_usd")) if book.get("amount_usd") else "null"
+
     cop_line = (
         f'<div class="price-cop">${book["price_cop"]} COP</div>'
         if book["lang"] == "es"
@@ -395,16 +429,22 @@ def render_book_page(book):
     if book["lang"] == "es":
         cta_group_html = (
             f'<div class="cta-group">'
-            f'<a href="{book["bold_link_cop"]}" class="cta-button cta-cop">{ui["cta_pay_cop"]}</a>'
-            f'<a href="{book["bold_link_usd"]}" class="cta-button cta-usd">{ui["cta_pay_usd"]}</a>'
+            f'<button type="button" class="cta-button cta-cop" onclick="handlePayment(\'COP\')">{ui["cta_pay_cop"]}</button>'
+            f'<button type="button" class="cta-button cta-usd" onclick="handlePayment(\'USD\')">{ui["cta_pay_usd"]}</button>'
             f'</div>'
         )
     else:
         cta_group_html = (
             f'<div class="cta-group">'
-            f'<a href="{book["bold_link_usd"]}" class="cta-button">{ui["cta_primary"]} → ${book["price_usd"]} USD</a>'
+            f'<button type="button" class="cta-button" onclick="handlePayment(\'USD\')">{ui["cta_primary"]} → ${book["price_usd"]} USD</button>'
             f'</div>'
         )
+
+    # JS literals para el bloque <script> inyectado al final del template
+    book_slug_js  = json.dumps(book["slug"])
+    book_title_js = json.dumps(book["title"])
+    amount_cop_js = json.dumps(book.get("amount_cop")) if book.get("amount_cop") else "null"
+    amount_usd_js = json.dumps(book.get("amount_usd")) if book.get("amount_usd") else "null"
 
     return f"""<!DOCTYPE html>
 <html lang="{ui['lang_code']}">
@@ -419,6 +459,7 @@ def render_book_page(book):
 <meta property="og:type" content="product">
 <link rel="icon" type="image/png" href="/assets/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bungee&display=swap" rel="stylesheet">
+<script src="https://checkout.bold.co/library/boldPaymentButton.js"></script>
 <style>
 :root {{
   --primary: {book['color_primary']};
@@ -546,7 +587,11 @@ header .logo img {{ height: 40px; }}
   transition: all 0.2s;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  border: none;
+  cursor: pointer;
+  line-height: 1.2;
 }}
+button.cta-button {{ font-family: 'Bungee', sans-serif; }}
 .cta-button:hover {{
   transform: translateY(-2px);
   box-shadow: 0 8px 0 rgba(0,0,0,0.3), 0 14px 40px rgba(0,0,0,0.25);
@@ -1069,6 +1114,56 @@ footer a {{ color: var(--accent); text-decoration: none; }}
 
 <a href="{wa_link(book['title'], book['lang'])}" target="_blank" rel="noopener" class="wa-float" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span class="wa-tooltip">{ui['wa_tooltip']}</span></a>
 
+<script>
+(function() {{
+  const BOOK_SLUG        = {book_slug_js};
+  const BOOK_TITLE       = {book_title_js};
+  const AMOUNT_COP       = {amount_cop_js};
+  const AMOUNT_USD       = {amount_usd_js};
+  const BOLD_API_KEY     = "{BOLD_API_KEY}";
+  const BOLD_INTEGRITY   = "{BOLD_INTEGRITY_KEY}";
+
+  async function sha256Hex(message) {{
+    const data = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    return Array.from(new Uint8Array(hashBuffer))
+      .map(b => b.toString(16).padStart(2, "0"))
+      .join("");
+  }}
+
+  window.handlePayment = async function(currency) {{
+    const amount = currency === "COP" ? AMOUNT_COP : AMOUNT_USD;
+    if (!amount) {{
+      alert("Moneda no disponible para este producto.");
+      return;
+    }}
+    try {{
+      if (!window.BoldCheckout) {{
+        alert("Bold todavía está cargando. Espera un momento y vuelve a intentar.");
+        return;
+      }}
+      const orderId = "GKB-" + BOOK_SLUG.toUpperCase() + "-" + Date.now();
+      const hash = await sha256Hex(orderId + amount + currency + BOLD_INTEGRITY);
+      const redirectionUrl = window.location.origin + "/success.html?book=" + encodeURIComponent(BOOK_SLUG);
+      const checkout = new window.BoldCheckout({{
+        apiKey: BOLD_API_KEY,
+        amount: String(amount),
+        currency: currency,
+        orderId: orderId,
+        integritySignature: hash,
+        description: BOOK_TITLE,
+        redirectionUrl: redirectionUrl,
+        renderMode: "embedded"
+      }});
+      checkout.open();
+    }} catch (err) {{
+      console.error("Bold Checkout error:", err);
+      alert("Hubo un problema abriendo el pago. Contáctanos por WhatsApp y te ayudamos manualmente.");
+    }}
+  }};
+}})();
+</script>
+
 </body>
 </html>
 """
@@ -1110,6 +1205,7 @@ def render_index():
 <meta property="og:image" content="/assets/logo.png">
 <link rel="icon" type="image/png" href="/assets/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bungee&display=swap" rel="stylesheet">
+<script src="https://checkout.bold.co/library/boldPaymentButton.js"></script>
 <style>
 :root {{
   --primary: #1645A6;
